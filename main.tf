@@ -22,3 +22,69 @@ module "aws_subnet" {
 
     tags = each.value.tags
 }
+
+
+module "internetGW_module" {
+    source = "./modules/aws_internetGw"
+
+    vpc_id = ""
+
+    tags = ""
+}
+
+module "NatGW_Module" {
+    source = "./modules/aws_natGw"
+
+    elasticIP_id = ""
+    subnet_id = ""
+
+    tags = ""
+}
+
+module "Elastic_IP_module" {
+    source = "./modules/aws_elastic_IP"
+
+    tags = ""  
+}
+
+module "route_table_module" {
+    source = "./modules/aws_route_table"
+
+    vpc_id = ""
+
+    gateway_id = ""
+
+    tags = ""
+}
+
+module "route_table_association" {
+    source = "./modules/route_table_association"
+
+    subnet_id = ""
+
+    route_table_id = ""
+
+}
+
+aws_route_table_association_config = {
+    RT01Assoc = {
+        subnet_name = "public-us-east-1a"
+        
+        route_table_name = "RT01"
+    }
+    RT02Assoc = {
+        subnet_name = "public-us-east-1a"
+
+        route_table_name = "RT01"
+    } 
+    RT03Assoc = {
+        subnet_name = "public-us-east-1a"
+
+        route_table_name = "RT02"
+    }  
+    RT04Assoc = {
+        subnet_name = "public-us-east-1a"
+
+        route_table_name = "RT03"       
+    }    
+}
